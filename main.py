@@ -1,0 +1,29 @@
+# main.py
+from fastapi import FastAPI
+from src.auth.infrastructure.routes import router as auth_router
+from src.pond.infrastructure.routes import router as pond_router
+from src.reading.infrastructure.routes import router as sensors_router
+from src.alerts.infrastructure.routes import router as alerts_router
+from src.pigua.infrastructure.routes import router as pigua_router
+from src.report.infrastructure.routes import router as report_router
+from src.notifications.infrastructure.routes import router as notification_router
+from src.sensors.infrastructure.routes import router as reading_router
+
+
+app = FastAPI(
+    title="API PIGUATECH",
+    description="Sistema de monitoreo IoT",
+    version="1.0.0"
+)
+
+app.include_router(auth_router)
+app.include_router(pond_router, prefix="/pond")
+app.include_router(sensors_router)
+app.include_router(alerts_router, prefix="/api")
+app.include_router(pigua_router)
+app.include_router(report_router)
+app.include_router(notification_router)
+app.include_router(reading_router)
+
+
+#uvicorn main:app --reload
