@@ -20,9 +20,10 @@ def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(bearer_
         )
 
 def verify_admin(user: dict = Depends(get_current_user)):
-    if user["role"] != "admin":
+    if user["role"] != "supervisor":
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
-            detail="Admin only"
+            detail="Supervisor only"
         )
     return user
+

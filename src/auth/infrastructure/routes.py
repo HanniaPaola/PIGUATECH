@@ -35,9 +35,9 @@ def login(user: UserLogin, service: AuthService = Depends(get_auth_service)):
     })
     return {"access_token": token, "token_type": "bearer"}
 
-@router.get("/admin-area")
-def admin_area(user: dict = Depends(verify_admin)):
-    return {"message": f"Hola admin {user['sub']}!"}
+@router.get("/supervisor-area")
+def supervisor_area(user: dict = Depends(verify_admin)):
+    return {"message": f"Hola supervisor {user['sub']}!"}
 
 @router.get("/profile")
 def profile(user: dict = Depends(get_current_user)):

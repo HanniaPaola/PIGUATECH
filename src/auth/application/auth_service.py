@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 from jose import jwt
 
-SECRET_KEY = "TU_CLAVE_SECRETA_CAMBIALA"
+SECRET_KEY = "PIGUATECH_1.0.0"
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 60
 

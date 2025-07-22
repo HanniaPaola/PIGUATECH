@@ -1,5 +1,8 @@
 # main.py
+
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+
 from src.auth.infrastructure.routes import router as auth_router
 from src.pond.infrastructure.routes import router as pond_router
 from src.reading.infrastructure.routes import router as sensors_router
@@ -9,13 +12,27 @@ from src.report.infrastructure.routes import router as report_router
 from src.notifications.infrastructure.routes import router as notification_router
 from src.sensors.infrastructure.routes import router as reading_router
 
-
 app = FastAPI(
     title="API PIGUATECH",
     description="Sistema de monitoreo IoT",
     version="1.0.0"
 )
 
+# Middleware de CORS
+origins = [
+    "http://localhost:4200",
+    "http://127.0.0.1:4200"
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# rutas
 app.include_router(auth_router)
 app.include_router(pond_router, prefix="/pond")
 app.include_router(sensors_router)
@@ -25,5 +42,4 @@ app.include_router(report_router)
 app.include_router(notification_router)
 app.include_router(reading_router)
 
-
-#uvicorn main:app --reload
+# uvicorn main:app --reload
