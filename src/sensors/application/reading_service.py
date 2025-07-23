@@ -1,4 +1,5 @@
 from sqlalchemy import func
+from sqlalchemy import extract, func
 from datetime import datetime, timedelta
 
 from src.core.db.connection import SessionLocal
@@ -128,5 +129,29 @@ class ReadingService:
                 "temperature": float(row.temperature)
             }
             for row in results if row.temperature is not None
+        ]
+        
+    def get_weight_trend(self, pond_id=None):
+        query = self.db.query(
+            extract('month', reading_repository.date).label('month'),
+            func.avg(weight_repository.weight).label('avg_weight')
+        ).join(
+            weight_repository, reading_repository.weight_id == weight_repository.weight_id
+        )
+
+        if pond_id:
+            query = query.filter(reading_repository.pond_id == pond_id)
+
+        query = query.group_by(
+            extract('month', reading_repository.date)
+        ).order_by(
+            extract('month', reading_repository.date)
+        )
+
+        result = query.all()
+
+        return [
+            {"month": int(row.month), "avg_weight": float(row.avg_weight)}
+            for row in result if row.avg_weight is not None
         ]
 
