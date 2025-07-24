@@ -11,6 +11,8 @@ from src.pigua.infrastructure.routes import router as pigua_router
 from src.report.infrastructure.routes import router as report_router
 from src.notifications.infrastructure.routes import router as notification_router
 from src.sensors.infrastructure.routes import router as reading_router
+from src.sensors.infrastructure import turbidity_routes
+from src.habitat.infrastructure import habitat_status_routes
 
 app = FastAPI(
     title="API PIGUATECH",
@@ -41,5 +43,7 @@ app.include_router(pigua_router)
 app.include_router(report_router)
 app.include_router(notification_router)
 app.include_router(reading_router)
+app.include_router(turbidity_routes.router)
+app.include_router(habitat_status_routes.router)
 
 # uvicorn main:app --reload
