@@ -1,3 +1,6 @@
 .env
-
-#mqtt_test_publisher.py
+__pycache__/
+__pycache.py__
+*.py[cod]
+*$py.class
+mqtt_test_publisher.py
