@@ -47,3 +47,7 @@ app.include_router(turbidity_routes.router)
 app.include_router(habitat_status_routes.router)
 
 # uvicorn main:app --reload
+
+# grafica de barras import numpy as np A2.py
+#import statistics, import matplotlib.pyplot as pltimport numpy as np act.py
+#domingo.py  import pandas as pd, import numpy as np

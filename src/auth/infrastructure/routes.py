@@ -4,7 +4,7 @@ from src.core.db.connection import get_db
 from src.auth.infrastructure.repository import AuthRepository
 from src.auth.application.auth_service import AuthService
 from src.auth.domain.entities import UserCreate, UserLogin
-from src.auth.infrastructure.security import get_current_user, verify_admin
+from src.auth.infrastructure.security import get_current_user, require_supervisor
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 
 bearer_scheme = HTTPBearer()
@@ -36,7 +36,7 @@ def login(user: UserLogin, service: AuthService = Depends(get_auth_service)):
     return {"access_token": token, "token_type": "bearer"}
 
 @router.get("/supervisor-area")
-def supervisor_area(user: dict = Depends(verify_admin)):
+def supervisor_area(user: dict = Depends(require_supervisor)):
     return {"message": f"Hola supervisor {user['sub']}!"}
 
 @router.get("/profile")

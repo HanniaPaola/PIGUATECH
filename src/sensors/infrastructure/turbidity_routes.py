@@ -1,11 +1,15 @@
 from fastapi import APIRouter, Depends
 from src.core.db.connection import get_db
 from src.sensors.domain.repositories.turbidity_repository import TurbidityRepository
+from src.auth.infrastructure.security import get_current_user, require_acuicultor
 
 router = APIRouter(prefix="/turbidity", tags=["turbidity"])
 
 @router.get("/trend")
-def get_turbidity_trend(db=Depends(get_db)):
+def get_turbidity_trend(
+    db=Depends(get_db),
+    user: dict = Depends(require_acuicultor)
+):
     repo = TurbidityRepository(db)
     data = repo.get_last_week_trend()
     if not data:
@@ -23,3 +27,15 @@ def get_turbidity_trend(db=Depends(get_db)):
         "series": series,
         "categories": categories[-len(series):]
     }
+
+    
+
+# Ejemplo supervisor
+@router.get("/supervisor-area")
+def supervisor_area(user: dict = Depends(require_acuicultor)):
+    return {"message": f"Hola supervisor {user['sub']}!"}
+
+# Ejemplo acuicultor
+#@router.get("/acuicultor-area")
+#def acuicultor_area(user: dict = Depends(require_acuicultor)):
+#    return {"message": f"Hola acuicultor {user['sub']}!"}

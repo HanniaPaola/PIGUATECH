@@ -9,7 +9,7 @@ from src.auth.application.auth_service import SECRET_KEY, ALGORITHM
 bearer_scheme = HTTPBearer()
 
 def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(bearer_scheme)):
-    token = credentials.credentials  # token de header Authorization
+    token = credentials.credentials
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         return payload
@@ -19,11 +19,16 @@ def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(bearer_
             detail="Invalid token"
         )
 
-def verify_admin(user: dict = Depends(get_current_user)):
-    if user["role"] != "supervisor":
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="Supervisor only"
-        )
-    return user
+def require_role(required_role: str):
+    def role_checker(user: dict = Depends(get_current_user)):
+        if user["role"] != required_role:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail=f"Only {required_role}s allowed"
+            )
+        return user
+    return role_checker
 
+# Alias rápidos
+require_supervisor = require_role("supervisor")
+require_acuicultor = require_role("acuicultor")
