@@ -9,5 +9,6 @@ class Pond(BaseModel):
     pond_id: int
     pigua_id: Optional[int] = None
 
-    class Config:
-        orm_mode = True
+    model_config = {
+        "from_attributes": True
+    }

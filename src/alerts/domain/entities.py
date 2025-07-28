@@ -9,8 +9,10 @@ class AlertCreate(BaseModel):
 
 class Alert(BaseModel):
     alert_id: int
-    reading_id: Optional[int]  
+    reading_id: Optional[int]
     status: str
 
-    class Config:
-        from_attributes = True
+    model_config = {
+        "from_attributes": True
+    }
+

@@ -17,5 +17,6 @@ class Report(BaseModel):
     created_by: Optional[int]
     file_path: Optional[str] = None
 
-    class Config:
-        orm_mode = True
+    model_config = {
+        "from_attributes": True
+    }
