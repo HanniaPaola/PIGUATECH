@@ -8,7 +8,7 @@ from src.sensors.domain.entities.temperature import TemperatureData
 from src.sensors.domain.repositories.temperature_repository import TemperatureRepository
 
 router = APIRouter(
-    prefix="/readingsSensor",
+    prefix="/readings",
     tags=["readings"]
 )
 
@@ -90,9 +90,11 @@ async def get_latest_temperature():
     finally:
         db.close()
     
-@router.get("/weight-trend", summary="Tendencia de peso promedio por mes")
+@router.get("/weight-trend", summary="Tendencia de peso promedio por semana")
 def get_weekly_weight_trend(
-    pond_id: int = Query(None, description="ID del estanque (opcional)")
+    pond_id: int = Query(None, description="ID del estanque (opcional)"),
+    weeks: int = Query(12, description="Cantidad de semanas a consultar")
 ):
-    return service.get_weekly_weight_trend(pond_id)
+    return service.get_weekly_weight_trend(pond_id, weeks)
+
 

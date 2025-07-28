@@ -71,15 +71,15 @@ async def get_all_readings(
     """
     return service.get_all_readings()
 
-@router.get(
-    "/{reading_id}",
-    response_model=Reading,
-    summary="Obtener una lectura específica",
-    responses={
-        200: {"description": "Lectura encontrada"},
-        404: {"description": "Lectura no encontrada"}
-    }
-)
+#@router.get(
+ #   "/{reading_id}",
+  #  response_model=Reading,
+   # summary="Obtener una lectura específica",
+    #responses={
+     #   200: {"description": "Lectura encontrada"},
+      #  404: {"description": "Lectura no encontrada"}
+    #}
+#)
 async def get_reading_by_id(
     reading_id: int,
     service: ReadingService = Depends(get_reading_service)
