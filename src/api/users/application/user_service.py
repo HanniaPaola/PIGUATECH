@@ -2,7 +2,7 @@ from typing import List, Optional
 from src.api.users.domain.user_repository import UserRepository
 from src.api.users.domain.user import User
 import bcrypt
-from datetime import datetime, UTC
+from datetime import datetime, timezone
 
 
 class UserService:
@@ -21,7 +21,7 @@ class UserService:
             password_hash=password_hash,
             role='farmer',
             supervisor_id=supervisor_id,
-            created_at=datetime.now(UTC)
+            created_at=datetime.now(timezone.utc)
         )
         return self.user_repository.create(user)
 

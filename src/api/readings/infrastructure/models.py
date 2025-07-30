@@ -1,7 +1,7 @@
 from sqlalchemy import Column, Integer, Float, String, DateTime
 
 from src.core.db.connection import Base
-from datetime import datetime, UTC
+from datetime import datetime, timezone
 
 
 class ReadingModel(Base):
@@ -10,6 +10,6 @@ class ReadingModel(Base):
     pond_id = Column(Integer, nullable=False)
     sensor_type = Column(String(50), nullable=False)
     value = Column(Float, nullable=False)
-    reading_date = Column(DateTime, default=lambda: datetime.now(UTC))
+    reading_date = Column(DateTime, default=lambda: datetime.now(timezone.utc))
 
  
