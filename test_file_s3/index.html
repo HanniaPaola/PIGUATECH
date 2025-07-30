@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Subir PDF a S3</title>
+</head>
+<body>
+  <h2>Subir PDF a S3</h2>
+
+  <input type="file" id="fileInput" accept="application/pdf" />
+  <button id="uploadBtn">Subir PDF</button>
+
+  <h2>Descargar PDF desde S3</h2>
+  <input type="text" id="downloadInput" placeholder="Nombre del archivo PDF" />
+  <button id="downloadBtn">Descargar PDF</button>
+
+  <script>
+    document.getElementById('uploadBtn').onclick = async () => {
+      const input = document.getElementById('fileInput');
+      if (!input.files.length) {
+        alert('Selecciona un archivo PDF');
+        return;
+      }
+
+      const file = input.files[0];
+
+      try {
+        // 1. Solicitar URL prefirmada para subir
+        const res = await fetch('http://localhost:8000/generate-presigned-url/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ filename: file.name })
+        });
+
+        if (!res.ok) {
+          const error = await res.json();
+          throw new Error(error.detail || 'Error al obtener URL');
+        }
+
+        const data = await res.json();
+
+        // 2. Subir el archivo directamente a S3
+        const upload = await fetch(data.url, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/pdf' },
+          body: file
+        });
+
+        if (upload.ok) {
+          alert('¡PDF subido con éxito!');
+        } else {
+          alert('Error al subir el archivo');
+        }
+      } catch (err) {
+        console.error(err);
+        alert('Error: ' + err.message);
+      }
+    };
+
+    document.getElementById('downloadBtn').onclick = async () => {
+      const filename = document.getElementById('downloadInput').value.trim();
+      if (!filename) {
+        alert('Escribe el nombre del archivo a descargar');
+        return;
+      }
+
+      try {
+        const res = await fetch(`http://localhost:8000/get-presigned-url?filename=${encodeURIComponent(filename)}`);
+        if (!res.ok) {
+          const error = await res.json();
+          throw new Error(error.detail || 'No se pudo obtener la URL de descarga');
+        }
+
+        const data = await res.json();
+        window.open(data.url, '_blank');
+      } catch (err) {
+        console.error(err);
+        alert('Error: ' + err.message);
+      }
+    };
+  </script>
+</body>
+</html>

@@ -1,29 +1,27 @@
-# main.py
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from src.auth.infrastructure.routes import router as auth_router
-from src.pond.infrastructure.routes import router as pond_router
-from src.reading.infrastructure.routes import router as sensors_router
-from src.alerts.infrastructure.routes import router as alerts_router
-from src.pigua.infrastructure.routes import router as pigua_router
-from src.report.infrastructure.routes import router as report_router
-from src.notifications.infrastructure.routes import router as notification_router
-from src.sensors.infrastructure.routes import router as reading_router
-from src.sensors.infrastructure import turbidity_routes
-from src.habitat.infrastructure import habitat_status_routes
+from src.api.auth.infrastructure.routes import router as auth_router
+from src.api.users.infrastructure.routes import router as users_router
+
+from src.api.ponds.infrastructure.routes import router as ponds_router
+from src.api.readings.infrastructure.routes import router as readings_router
+from src.api.biomass.infrastructure.routes import router as biomass_router
+from src.api.notifications.infrastructure.routes import router as notifications_router
+
+from src.api.reports.infrastructure.routes import router as reports_router
+from src.api.files.infrastructure.routes import router as files_router
 
 app = FastAPI(
-    title="API PIGUATECH",
+    title="PIGUATECH API v4.0",
     description="Sistema de monitoreo IoT",
-    version="1.0.0"
+    version="4.0"
 )
 
-# Middleware de CORS
 origins = [
     "http://localhost:4200",
-    "http://127.0.0.1:4200"
+    "http://127.0.0.1:4200",
     "https://piguafront.ddns.net"
 ]
 
@@ -35,20 +33,19 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# rutas
+
 app.include_router(auth_router)
-app.include_router(pond_router, prefix="/pond")
-app.include_router(sensors_router)
-app.include_router(alerts_router, prefix="/api")
-app.include_router(pigua_router)
-app.include_router(report_router)
-app.include_router(notification_router)
-app.include_router(reading_router)
-app.include_router(turbidity_routes.router)
-app.include_router(habitat_status_routes.router)
+app.include_router(users_router)
 
-# uvicorn main:app --reload
+app.include_router(ponds_router)
+app.include_router(readings_router)
+app.include_router(biomass_router)
+app.include_router(notifications_router)
 
-# grafica de barras import numpy as np A2.py
-#import statistics, import matplotlib.pyplot as pltimport numpy as np act.py
-#domingo.py  import pandas as pd, import numpy as np
+app.include_router(reports_router)
+app.include_router(files_router)
+
+
+@app.get("/")
+def root():
+    return {"message": "PIGUATECH API v4.0 running"}
