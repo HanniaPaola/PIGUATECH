@@ -4,7 +4,7 @@ from src.api.users.infrastructure.models import UserModel
 from src.core.db.connection import get_db
 from typing import Optional, List
 from sqlalchemy.orm import Session
-from datetime import datetime, UTC
+from datetime import datetime, timezone
 
 
 class UserMysql(UserRepository):

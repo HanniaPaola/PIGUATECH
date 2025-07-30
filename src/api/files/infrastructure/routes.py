@@ -8,6 +8,7 @@ router = APIRouter(prefix="/api/files", tags=["files"])
 BUCKET_NAME = 'informespiguatech'
 s3_client = boto3.client('s3')
 
+
 class FileRequest(BaseModel):
     filename: str
 
@@ -25,6 +26,8 @@ async def upload_file(file: UploadFile = File(...)):
         return {"filename": file.filename, "message": "Archivo subido exitosamente"}
     except ClientError as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+
 @router.post("/generate-presigned-url", response_model=dict)
 def generate_presigned_url(data: FileRequest):
     url = s3_client.generate_presigned_url(
@@ -37,6 +40,7 @@ def generate_presigned_url(data: FileRequest):
         ExpiresIn=3600
     )
     return {"url": url}
+
 
 @router.get("/get-presigned-url/", response_model=dict)
 def get_presigned_url(filename: str):

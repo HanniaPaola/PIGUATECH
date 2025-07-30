@@ -11,5 +11,3 @@ class ReadingModel(Base):
     sensor_type = Column(String(50), nullable=False)
     value = Column(Float, nullable=False)
     reading_date = Column(DateTime, default=lambda: datetime.now(timezone.utc))
-
- 

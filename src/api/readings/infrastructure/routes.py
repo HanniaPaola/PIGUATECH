@@ -75,7 +75,8 @@ def readings_stats_pdf(db=Depends(get_db)):
     doc = SimpleDocTemplate(buffer, pagesize=letter)
     elements = []
     styles = getSampleStyleSheet()
-    elements.append(Paragraph("<b>Reporte Detallado de Lecturas (Readings)</b>", styles['Title']))
+    elements.append(
+        Paragraph("<b>Reporte Detallado de Lecturas (Readings)</b>", styles['Title']))
     elements.append(Spacer(1, 12))
 
     # Tabla de datos
@@ -100,10 +101,12 @@ def readings_stats_pdf(db=Depends(get_db)):
         sensor_df = df[df['sensor_type'] == sensor]
         values = sensor_df['value']
         desc = values.describe()
-        elements.append(Paragraph(f"<b>Sensor: {sensor}</b>", styles['Heading2']))
+        elements.append(
+            Paragraph(f"<b>Sensor: {sensor}</b>", styles['Heading2']))
         stats_table = Table([
             ['Count', 'Min', 'Max', 'Mean', 'Std'],
-            [f"{desc['count']:.0f}", f"{desc['min']:.2f}", f"{desc['max']:.2f}", f"{desc['mean']:.2f}", f"{desc['std']:.2f}" if not np.isnan(desc['std']) else '0.00']
+            [f"{desc['count']:.0f}", f"{desc['min']:.2f}", f"{desc['max']:.2f}",
+                f"{desc['mean']:.2f}", f"{desc['std']:.2f}" if not np.isnan(desc['std']) else '0.00']
         ])
         stats_table.setStyle(TableStyle([
             ('BACKGROUND', (0, 0), (-1, 0), colors.lightblue),
@@ -125,7 +128,8 @@ def readings_stats_pdf(db=Depends(get_db)):
             ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
             ('GRID', (0, 0), (-1, -1), 1, colors.black),
         ]))
-        elements.append(Paragraph("<b>Distribución de frecuencias</b>", styles['Heading3']))
+        elements.append(
+            Paragraph("<b>Distribución de frecuencias</b>", styles['Heading3']))
         elements.append(freq_table)
         elements.append(Spacer(1, 8))
 
