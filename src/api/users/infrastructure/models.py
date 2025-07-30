@@ -1,7 +1,7 @@
 from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
 from sqlalchemy.orm import relationship
 from src.core.db.connection import Base
-from datetime import datetime, UTC
+from datetime import datetime, timezone
 
 
 class UserModel(Base):
@@ -12,6 +12,6 @@ class UserModel(Base):
     password_hash = Column(String(255), nullable=False)
     role = Column(String(50), nullable=False)
     supervisor_id = Column(Integer, ForeignKey("user.id"), nullable=True)
-    created_at = Column(DateTime, default=lambda: datetime.now(UTC))
+    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
 
     supervisor = relationship("UserModel", remote_side=[id])
