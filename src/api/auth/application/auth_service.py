@@ -3,7 +3,7 @@ from src.api.auth.domain.user_repository import UserRepository
 from src.api.auth.domain.user import User
 import bcrypt
 import jwt
-from datetime import datetime, timedelta, UTC
+from datetime import datetime, timedelta, timezone
 
 
 class AuthService:
@@ -24,7 +24,7 @@ class AuthService:
             password_hash=password_hash,
             role='supervisor',
             supervisor_id=None,
-            created_at=datetime.now(UTC)
+            created_at=datetime.now(timezone.utc)
         )
         return self.user_repository.create(user)
 
@@ -35,7 +35,7 @@ class AuthService:
         payload = {
             'id': user.id,
             'role': user.role,
-            'exp': datetime.now(UTC) + timedelta(hours=24)
+            'exp': datetime.now(timezone.utc) + timedelta(hours=24)
         }
         token = jwt.encode(payload, self.secret_key, algorithm=self.algorithm)
         return token, user
