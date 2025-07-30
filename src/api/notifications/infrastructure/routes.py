@@ -4,18 +4,18 @@ from ...notifications.domain.notification import Notification
 from ...notifications.infrastructure.notification_mysql import NotificationMySQLRepository
 from ...users.infrastructure.routes import get_current_user
 from src.db.database import SessionLocal
-from typing import List
+from typing import List, Optional
 
 router = APIRouter(prefix="/api/notifications", tags=["notifications"])
 
 
 class NotificationRequest(BaseModel):
-    id: int | None = None
+    id: Optional[int] = None
     pond_id: int
     message: str
     type: str
-    is_read: bool | None = None
-    created_at: str | None = None
+    is_read: Optional[bool] = None
+    created_at: Optional[str] = None
 
 
 def get_db():

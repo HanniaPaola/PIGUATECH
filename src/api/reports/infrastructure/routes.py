@@ -4,16 +4,16 @@ from ...reports.domain.report import Report
 from ...reports.infrastructure.report_mysql import ReportMySQLRepository
 from ...users.infrastructure.routes import get_current_user
 from src.db.database import SessionLocal
-from typing import List
+from typing import List, Optional
 
 router = APIRouter(prefix="/api/reports", tags=["reports"])
 
 
 class ReportRequest(BaseModel):
-    id: int | None = None
+    id: Optional[int] = None
     title: str
-    file_url: str | None = None
-    created_at: str | None = None
+    file_url: Optional[str] = None
+    created_at: Optional[str] = None
 
 
 def get_db():
