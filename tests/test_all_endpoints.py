@@ -41,7 +41,7 @@ def test_create_and_get_farmer():
     token = get_auth_token("supervisor_farmer@example.com", "testpass123")
     headers = {"Authorization": f"Bearer {token}"}
     # Create farmer
-    r = client.post("/api/users/farmers", json={
+    r = client.post("/api/users/acuicultor", json={
         "full_name": "Test Farmer",
         "email": "farmer_all@example.com",
         "password": "farmerpass"
@@ -50,8 +50,8 @@ def test_create_and_get_farmer():
     # Get me (supervisor)
     r = client.get("/api/users/me", headers=headers)
     assert r.status_code == 200
-    # Get my farmers
-    r = client.get("/api/users/my-farmers", headers=headers)
+    # Get my acuicultor
+    r = client.get("/api/users/my-acuicultor", headers=headers)
     assert r.status_code == 200
     assert any(f["email"] == "farmer_all@example.com" for f in r.json()["data"])
 

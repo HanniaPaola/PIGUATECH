@@ -40,7 +40,7 @@ def test_login_supervisor():
     assert data["data"]["user"]["email"] == "supervisor2@example.com"
 
 
-def test_create_farmer():
+def test_create_acuicultor():
     # Registrar y loguear supervisor
     client.post("/api/auth/register", json={
         "full_name": "Test Supervisor",
@@ -53,7 +53,7 @@ def test_create_farmer():
     })
     token = login.json()["data"]["token"]
     headers = {"Authorization": f"Bearer {token}"}
-    response = client.post("/api/users/farmers", json={
+    response = client.post("/api/users/acuicultor", json={
         "full_name": "Test Farmer",
         "email": "farmer@example.com",
         "password": "farmerpass"

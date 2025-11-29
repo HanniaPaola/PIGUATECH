@@ -30,7 +30,7 @@ def get_db():
 def create_pond(request: PondRequest, user=Depends(get_current_user), db=Depends(get_db)):
     if user["role"] != "farmer":
         raise HTTPException(
-            status_code=403, detail="Only farmers can create ponds")
+            status_code=403, detail="Only acuicultor can create ponds")
     repo = PondMySQLRepository(db)
     pond = Pond(
         id=0,

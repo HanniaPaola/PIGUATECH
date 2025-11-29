@@ -41,13 +41,13 @@ class FarmerRequest(BaseModel):
     password: str
 
 
-@router.post("/farmers", status_code=201)
-def create_farmer(request: FarmerRequest, user=Depends(get_current_user), service: UserService = Depends(get_user_service)):
+@router.post("/acuicultor", status_code=201)
+def create_acuicultor(request: FarmerRequest, user=Depends(get_current_user), service: UserService = Depends(get_user_service)):
     if user["role"] != "supervisor":
         raise HTTPException(
-            status_code=403, detail="Only supervisors can create farmers")
+            status_code=403, detail="Only supervisors can create acuicultor")
     try:
-        farmer = service.create_farmer(
+        farmer = service.create_acuicultor(
             user["id"], request.full_name, request.email, request.password)
         return {"success": True, "data": {"id": farmer.id, "full_name": farmer.full_name, "email": farmer.email}}
     except ValueError as e:
@@ -62,10 +62,10 @@ def get_me(user=Depends(get_current_user), service: UserService = Depends(get_us
     return {"success": True, "data": {"id": me.id, "full_name": me.full_name, "email": me.email, "role": me.role}}
 
 
-@router.get("/my-farmers")
-def get_my_farmers(user=Depends(get_current_user), service: UserService = Depends(get_user_service)):
+@router.get("/my-acuicultor")
+def acuicultor(user=Depends(get_current_user), service: UserService = Depends(get_user_service)):
     if user["role"] != "supervisor":
         raise HTTPException(
-            status_code=403, detail="Only supervisors can view their farmers")
-    farmers: List[User] = service.get_my_farmers(user["id"])
-    return {"success": True, "data": [{"id": f.id, "full_name": f.full_name, "email": f.email} for f in farmers]}
+            status_code=403, detail="Only supervisors can view their acuicultor")
+    acuicultor: List[User] = service.get_my_acuicultor(user["id"])
+    return {"success": True, "data": [{"id": f.id, "full_name": f.full_name, "email": f.email} for f in acuicultor]}

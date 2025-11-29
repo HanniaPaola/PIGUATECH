@@ -9,7 +9,7 @@ class UserService:
     def __init__(self, user_repository: UserRepository):
         self.user_repository = user_repository
 
-    def create_farmer(self, supervisor_id: int, full_name: str, email: str, password: str) -> User:
+    def create_acuicultor(self, supervisor_id: int, full_name: str, email: str, password: str) -> User:
         if self.user_repository.get_by_email(email):
             raise ValueError('Email already exists')
         password_hash = bcrypt.hashpw(
@@ -19,7 +19,7 @@ class UserService:
             full_name=full_name,
             email=email,
             password_hash=password_hash,
-            role='farmer',
+            role='acuicultor',
             supervisor_id=supervisor_id,
             created_at=datetime.now(timezone.utc)
         )
@@ -28,5 +28,6 @@ class UserService:
     def get_me(self, user_id: int) -> Optional[User]:
         return self.user_repository.get_by_id(user_id)
 
-    def get_my_farmers(self, supervisor_id: int) -> List[User]:
-        return self.user_repository.list_farmers_by_supervisor(supervisor_id)
+    def get_my_acuicultores(self, supervisor_id: int) -> List[User]:
+        return self.user_repository.list_acuicultores_by_supervisor(supervisor_id)
+

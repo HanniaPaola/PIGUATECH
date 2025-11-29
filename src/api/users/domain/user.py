@@ -8,6 +8,6 @@ class User:
         self.full_name = full_name
         self.email = email
         self.password_hash = password_hash
-        self.role = role  # 'supervisor' or 'farmer'
+        self.role = role  # 'supervisor' or 'acuicultor'
         self.supervisor_id = supervisor_id
         self.created_at = created_at

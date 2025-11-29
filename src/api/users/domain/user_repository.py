@@ -17,5 +17,5 @@ class UserRepository(ABC):
         pass
 
     @abstractmethod
-    def list_farmers_by_supervisor(self, supervisor_id: int) -> List[User]:
+    def list_acuicultores_by_supervisor(self, supervisor_id: int) -> List[User]:
         pass

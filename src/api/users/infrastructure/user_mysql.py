@@ -50,10 +50,10 @@ class UserMySQLRepository(UserRepository):
         self.db.refresh(db_user)
         return self._to_domain(db_user)
 
-    def list_farmers_by_supervisor(self, supervisor_id: int) -> List[User]:
-        farmers = self.db.query(UserModel).filter(
+    def list_acuicultores_by_supervisor(self, supervisor_id: int) -> List[User]:
+        acuicultor = self.db.query(UserModel).filter(
             UserModel.supervisor_id == supervisor_id).all()
-        return [self._to_domain(f) for f in farmers]
+        return [self._to_domain(f) for f in acuicultor]
 
     def _to_domain(self, user_model: UserModel) -> User:
         return User(

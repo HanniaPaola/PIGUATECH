@@ -55,9 +55,9 @@ class UserMysql(UserRepository):
         user.id = db_user.id
         return user
 
-    def list_farmers_by_supervisor(self, supervisor_id: int) -> List[User]:
-        farmers = self.db.query(UserModel).filter(
-            UserModel.supervisor_id == supervisor_id, UserModel.role == 'farmer').all()
+    def list_acuicultores_by_supervisor(self, supervisor_id: int) -> List[User]:
+        acuicultores  = self.db.query(UserModel).filter(
+            UserModel.supervisor_id == supervisor_id, UserModel.role == 'acuicultor').all()
         return [User(
             id=u.id,
             full_name=u.full_name,
@@ -66,4 +66,4 @@ class UserMysql(UserRepository):
             role=u.role,
             supervisor_id=u.supervisor_id,
             created_at=u.created_at
-        ) for u in farmers]
+        ) for u in acuicultores]
