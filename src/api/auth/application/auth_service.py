@@ -12,20 +12,22 @@ class AuthService:
         self.secret_key = secret_key
         self.algorithm = algorithm
 
-    def register_supervisor(self, full_name: str, email: str, password: str) -> User:
+    def register_user(self, full_name: str, email: str, password: str, role: str, supervisor_id: Optional[int]):
         if self.user_repository.get_by_email(email):
-            raise ValueError('Email already exists')
-        password_hash = bcrypt.hashpw(
-            password.encode(), bcrypt.gensalt()).decode()
+            raise ValueError("El correo ya está registrado, intenta con otro")
+
+        password_hash = bcrypt.hashpw(password.encode(), bcrypt.gensalt()).decode()
+
         user = User(
-            id=0,  # to be set by DB
+            id=0,
             full_name=full_name,
             email=email,
             password_hash=password_hash,
-            role='supervisor',
-            supervisor_id=None,
+            role=role,
+            supervisor_id=supervisor_id,
             created_at=datetime.now(timezone.utc)
         )
+
         return self.user_repository.create(user)
 
     def login(self, email: str, password: str) -> Optional[str]:

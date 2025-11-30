@@ -31,20 +31,20 @@ def test_register_and_login_supervisor():
     assert "token" in r.json()["data"]
 
 
-def test_create_and_get_farmer():
+def test_create_and_get_acuicultor():
     # Register supervisor
     client.post("/api/auth/register", json={
         "full_name": "Test Supervisor2",
-        "email": "supervisor_farmer@example.com",
+        "email": "supervisor_acuicultor@example.com",
         "password": "testpass123"
     })
-    token = get_auth_token("supervisor_farmer@example.com", "testpass123")
+    token = get_auth_token("supervisor_acuicultor@example.com", "testpass123")
     headers = {"Authorization": f"Bearer {token}"}
-    # Create farmer
+    # Create acuicultor
     r = client.post("/api/users/acuicultor", json={
-        "full_name": "Test Farmer",
-        "email": "farmer_all@example.com",
-        "password": "farmerpass"
+        "full_name": "Test acuicultor",
+        "email": "acuicultor@example.com",
+        "password": "acuicultorpass"
     }, headers=headers)
     assert r.status_code == 201
     # Get me (supervisor)
@@ -53,7 +53,7 @@ def test_create_and_get_farmer():
     # Get my acuicultor
     r = client.get("/api/users/my-acuicultor", headers=headers)
     assert r.status_code == 200
-    assert any(f["email"] == "farmer_all@example.com" for f in r.json()["data"])
+    assert any(f["email"] == "acuicultor_all@example.com" for f in r.json()["data"])
 
 
 def test_ponds_endpoints():

@@ -10,7 +10,7 @@ import enum
 
 class UserRole(enum.Enum):
     supervisor = 'supervisor'
-    farmer = 'farmer'
+    acuicultor = 'acuicultor'
 
 
 class UserModel(Base):

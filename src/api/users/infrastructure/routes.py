@@ -35,21 +35,21 @@ def get_current_user(token: str = Depends(http_bearer)):
         raise HTTPException(status_code=401, detail="Invalid or expired token")
 
 
-class FarmerRequest(BaseModel):
+class AcuicultorRequest(BaseModel):
     full_name: str
     email: EmailStr
     password: str
 
 
 @router.post("/acuicultor", status_code=201)
-def create_acuicultor(request: FarmerRequest, user=Depends(get_current_user), service: UserService = Depends(get_user_service)):
+def create_acuicultor(request: AcuicultorRequest, user=Depends(get_current_user), service: UserService = Depends(get_user_service)):
     if user["role"] != "supervisor":
         raise HTTPException(
             status_code=403, detail="Only supervisors can create acuicultor")
     try:
-        farmer = service.create_acuicultor(
+        acuicultor = service.create_acuicultor(
             user["id"], request.full_name, request.email, request.password)
-        return {"success": True, "data": {"id": farmer.id, "full_name": farmer.full_name, "email": farmer.email}}
+        return {"success": True, "data": {"id": acuicultor.id, "full_name": acuicultor.full_name, "email": acuicultor.email}}
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
 

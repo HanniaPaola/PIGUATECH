@@ -11,7 +11,7 @@ class UserService:
 
     def create_acuicultor(self, supervisor_id: int, full_name: str, email: str, password: str) -> User:
         if self.user_repository.get_by_email(email):
-            raise ValueError('Email already exists')
+            raise ValueError('El correo ya está registrado, intenta con otro')
         password_hash = bcrypt.hashpw(
             password.encode(), bcrypt.gensalt()).decode()
         user = User(

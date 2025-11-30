@@ -28,13 +28,13 @@ def get_db():
 
 @router.post("/", status_code=201)
 def create_pond(request: PondRequest, user=Depends(get_current_user), db=Depends(get_db)):
-    if user["role"] != "farmer":
+    if user["role"] != "acuicultor":
         raise HTTPException(
             status_code=403, detail="Only acuicultor can create ponds")
     repo = PondMySQLRepository(db)
     pond = Pond(
         id=0,
-        farmer_id=user["id"],
+        acuicultor_id=user["id"],
         name=request.name,
         location=request.location,
         description=request.description,
@@ -48,7 +48,7 @@ def create_pond(request: PondRequest, user=Depends(get_current_user), db=Depends
 @router.get("/", response_model=List[PondRequest])
 def list_ponds(user=Depends(get_current_user), db=Depends(get_db)):
     repo = PondMySQLRepository(db)
-    ponds = repo.list_by_farmer(user["id"])
+    ponds = repo.list_by_acuicultor(user["id"])
     return [PondRequest(
         name=p.name,
         location=p.location,

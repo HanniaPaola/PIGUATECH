@@ -13,5 +13,5 @@ class PondRepository(ABC):
         pass
 
     @abstractmethod
-    def list_by_farmer(self, farmer_id: int) -> List[Pond]:
+    def list_by_acuicultor(self, acuicultor_id: int) -> List[Pond]:
         pass

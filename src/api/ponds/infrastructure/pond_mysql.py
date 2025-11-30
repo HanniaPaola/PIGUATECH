@@ -11,7 +11,7 @@ from src.api.ponds.infrastructure.models import PondModel
 class PondModel(Base):
     __tablename__ = 'pond'
     id = Column(Integer, primary_key=True, index=True)
-    farmer_id = Column(Integer, nullable=False)
+    acuicultor_id = Column(Integer, nullable=False)
     name = Column(String(255), nullable=False)
     location = Column(String(255), nullable=False)
     description = Column(Text, nullable=True)
@@ -29,7 +29,7 @@ class PondMySQLRepository(PondRepository):
 
     def create(self, pond: Pond) -> Pond:
         db_pond = PondModel(
-            farmer_id=pond.farmer_id,
+            acuicultor_id=pond.acuicultor_id,
             name=pond.name,
             location=pond.location,
             description=pond.description,
@@ -40,15 +40,15 @@ class PondMySQLRepository(PondRepository):
         self.db.refresh(db_pond)
         return self._to_domain(db_pond)
 
-    def list_by_farmer(self, farmer_id: int) -> List[Pond]:
+    def list_by_acuicultor(self, acuicultor_id: int) -> List[Pond]:
         ponds = self.db.query(PondModel).filter(
-            PondModel.farmer_id == farmer_id).all()
+            PondModel.acuicultor_id == acuicultor_id).all()
         return [self._to_domain(p) for p in ponds]
 
     def _to_domain(self, pond_model: PondModel) -> Pond:
         return Pond(
             id=pond_model.id,
-            farmer_id=pond_model.farmer_id,
+            acuicultor_id=pond_model.acuicultor_id,
             name=pond_model.name,
             location=pond_model.location,
             description=pond_model.description,

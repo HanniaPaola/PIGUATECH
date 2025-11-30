@@ -54,11 +54,11 @@ def test_create_acuicultor():
     token = login.json()["data"]["token"]
     headers = {"Authorization": f"Bearer {token}"}
     response = client.post("/api/users/acuicultor", json={
-        "full_name": "Test Farmer",
-        "email": "farmer@example.com",
-        "password": "farmerpass"
+        "full_name": "Test acuicultor",
+        "email": "acuicultor@example.com",
+        "password": "acuicultorpass"
     }, headers=headers)
     assert response.status_code == 201
     data = response.json()
     assert data["success"] is True
-    assert data["data"]["email"] == "farmer@example.com"
+    assert data["data"]["email"] == "acuicultor@example.com"

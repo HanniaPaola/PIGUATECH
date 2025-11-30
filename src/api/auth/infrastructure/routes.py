@@ -23,6 +23,8 @@ class RegisterRequest(BaseModel):
     full_name: str
     email: EmailStr
     password: str
+    role: str 
+
 
 
 class LoginRequest(BaseModel):
@@ -31,19 +33,43 @@ class LoginRequest(BaseModel):
 
 
 @router.post("/register", status_code=201)
-def register_supervisor(request: RegisterRequest, service: AuthService = Depends(get_auth_service)):
+def register(request: RegisterRequest, service: AuthService = Depends(get_auth_service)):
     try:
-        user = service.register_supervisor(
-            request.full_name, request.email, request.password)
-        return {"success": True, "data": {"id": user.id, "full_name": user.full_name, "email": user.email}}
+        user = service.register_user(
+            request.full_name,
+            request.email,
+            request.password,
+            request.role,
+            None  # supervisor_id (si luego lo quieres asignar)
+        )
+        return {
+            "success": True,
+            "data": {
+                "id": user.id,
+                "full_name": user.full_name,
+                "email": user.email,
+                "role": user.role
+            }
+        }
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
-
+    
 
 @router.post("/login")
 def login(request: LoginRequest, service: AuthService = Depends(get_auth_service)):
     result = service.login(request.email, request.password)
     if not result:
         raise HTTPException(status_code=401, detail="Invalid credentials")
+
     token, user = result
-    return {"success": True, "data": {"token": token, "user": {"id": user.id, "role": user.role, "email": user.email, "full_name": user.full_name}}}
+
+    return {
+        "access_token": token,
+        "token_type": "bearer",
+        "user": {
+            "id": user.id,
+            "role": user.role,
+            "email": user.email,
+            "full_name": user.full_name
+        }
+    }
